@@ -5,6 +5,7 @@ import me.jmix.brothertakeaway.entity.ProductInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,5 +22,11 @@ class ProductInfoRepositoryTest extends BrotherTakeawayProductApplicationTests {
     void findByProductStatus() {
         List<ProductInfo> list =  productInfoRepository.findByProductStatus(0);
         assertTrue(list.size() > 0);
+    }
+
+    @Test
+    void findByProductIdIn() {
+        List<ProductInfo> list = productInfoRepository.findByProductIdIn(Arrays.asList("123456", "123458"));
+        assertEquals(2, list.size());
     }
 }
