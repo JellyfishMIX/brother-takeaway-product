@@ -1,13 +1,17 @@
 package me.jmix.brothertakeaway.service.impl;
 
 import me.jmix.brothertakeaway.dao.ProductInfoRepository;
+import me.jmix.brothertakeaway.dto.CartDTO;
 import me.jmix.brothertakeaway.entity.ProductInfo;
-import me.jmix.brothertakeaway.enums.ProductStateEnum;
+import me.jmix.brothertakeaway.enums.ProductEnum;
+import me.jmix.brothertakeaway.exception.ProductException;
 import me.jmix.brothertakeaway.service.ProductInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author JellyfishMIX
@@ -25,7 +29,7 @@ public class ProductInfoServiceImpl implements ProductInfoService {
      */
     @Override
     public List<ProductInfo> getShelvesProductInfo() {
-        List<ProductInfo> productInfoList = productInfoRepository.findByProductStatus(ProductStateEnum.SHELVES.getStateCode());
+        List<ProductInfo> productInfoList = productInfoRepository.findByProductStatus(ProductEnum.SHELVES.getStateCode());
         return productInfoList;
     }
 
@@ -38,5 +42,32 @@ public class ProductInfoServiceImpl implements ProductInfoService {
     @Override
     public List<ProductInfo> queryProductInfoListByProductIdList(List<String> productIdList) {
         return productInfoRepository.findByProductIdIn(productIdList);
+    }
+
+    /**
+     * 扣库存
+     *
+     * @param cartDTOList cartDTOList
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void decreaseStock(List<CartDTO> cartDTOList) {
+        for (CartDTO cartDTO : cartDTOList) {
+            Optional<ProductInfo> productInfoOptional = productInfoRepository.findById(cartDTO.getProductId());
+            // 判断商品是否存在
+            if (!productInfoOptional.isPresent()) {
+                throw new ProductException(ProductEnum.PRODUCT_NOT_EXIST);
+            }
+
+            ProductInfo productInfo = productInfoOptional.get();
+            Integer result = productInfo.getProductStock() - cartDTO.getProductQuantity();
+            // 判断商品是否足够
+            if (result < 0) {
+                throw new ProductException(ProductEnum.INVENTORY_SHORTAGE);
+            }
+
+            productInfo.setProductStock(result);
+            productInfoRepository.save(productInfo);
+        }
     }
 }

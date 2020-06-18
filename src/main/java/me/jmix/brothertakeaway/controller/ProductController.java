@@ -1,5 +1,6 @@
 package me.jmix.brothertakeaway.controller;
 
+import me.jmix.brothertakeaway.dto.CartDTO;
 import me.jmix.brothertakeaway.entity.ProductCategory;
 import me.jmix.brothertakeaway.entity.ProductInfo;
 import me.jmix.brothertakeaway.service.ProductCategoryService;
@@ -78,5 +79,15 @@ public class ProductController {
     @PostMapping("/list-for-order")
     public List<ProductInfo> listForProduct(@RequestBody List<String> productInfoList) {
         return productInfoService.queryProductInfoListByProductIdList(productInfoList);
+    }
+
+    /**
+     * 扣库存
+     *
+     * @param cartDTOList cartDTOList
+     */
+    @PostMapping("/decrease-stock")
+    public void decreaseStock(@RequestBody List<CartDTO> cartDTOList) {
+        productInfoService.decreaseStock(cartDTOList);
     }
 }

@@ -1,7 +1,7 @@
 package me.jmix.brothertakeaway.entity;
 
 import lombok.Data;
-import me.jmix.brothertakeaway.enums.ProductStateEnum;
+import me.jmix.brothertakeaway.enums.ProductEnum;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -45,7 +45,7 @@ public class ProductInfo {
     /**
      * 商品状态，0上架，1下架
      */
-    private Integer productStatus = ProductStateEnum.SHELVES.getStateCode();
+    private Integer productStatus = ProductEnum.SHELVES.getStateCode();
     /**
      * 类目编号
      */

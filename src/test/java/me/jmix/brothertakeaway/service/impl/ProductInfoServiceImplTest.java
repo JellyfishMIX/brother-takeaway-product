@@ -1,6 +1,7 @@
 package me.jmix.brothertakeaway.service.impl;
 
 import me.jmix.brothertakeaway.BrotherTakeawayProductApplicationTests;
+import me.jmix.brothertakeaway.dto.CartDTO;
 import me.jmix.brothertakeaway.entity.ProductInfo;
 import me.jmix.brothertakeaway.service.ProductInfoService;
 import org.junit.jupiter.api.Test;
@@ -29,5 +30,11 @@ class ProductInfoServiceImplTest extends BrotherTakeawayProductApplicationTests 
     void queryProductInfoListByProductIdList() {
         List<ProductInfo> productInfoList = productInfoService.queryProductInfoListByProductIdList(Arrays.asList("123456", "123458"));
         assertEquals(2, productInfoList.size());
+    }
+
+    @Test
+    void decreaseStock() {
+        CartDTO cartDTO = new CartDTO("123456", 2);
+        productInfoService.decreaseStock(Arrays.asList(cartDTO));
     }
 }

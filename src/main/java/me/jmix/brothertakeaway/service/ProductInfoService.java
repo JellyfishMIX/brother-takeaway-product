@@ -1,5 +1,6 @@
 package me.jmix.brothertakeaway.service;
 
+import me.jmix.brothertakeaway.dto.CartDTO;
 import me.jmix.brothertakeaway.entity.ProductInfo;
 
 import java.util.List;
@@ -22,4 +23,11 @@ public interface ProductInfoService {
      * @return
      */
     List<ProductInfo> queryProductInfoListByProductIdList(List<String> productIdList);
+
+    /**
+     * 扣库存
+     *
+     * @param cartDTOList cartDTOList
+     */
+    void decreaseStock(List<CartDTO> cartDTOList);
 }
