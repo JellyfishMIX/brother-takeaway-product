@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>brother-takeaway-product-server</artifactId>
+    <artifactId>brother-takeaway-product-client</artifactId>
 
     <dependencies>
         <dependency>
@@ -17,17 +17,5 @@
             <artifactId>brother-takeaway-product-common</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>me.jmix.brothertakeaway.product.BrotherTakeawayProductApplication</mainClass>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
