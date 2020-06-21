@@ -2,7 +2,7 @@ package me.jmix.brothertakeaway.product.client;
 
 import me.jmix.brothertakeaway.product.vo.CartVO;
 import me.jmix.brothertakeaway.product.entity.ProductInfo;
-import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
