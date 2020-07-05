@@ -16,7 +16,7 @@ import java.util.List;
 // name是应用的名字，表示要访问哪个应用的API
 @FeignClient(name = "brother-takeaway-product")
 public interface ProductClient {
-    @GetMapping("/brother-takeaway-product/server/message")
+    @GetMapping("/server/message")
     String productMsg();
 
     /**
@@ -25,7 +25,7 @@ public interface ProductClient {
      * @param productInfoList productInfoList
      * @return
      */
-    @PostMapping("/brother-takeaway-product/product/list-for-order")
+    @PostMapping("/product/list-for-order")
     List<ProductInfo> listForProduct(@RequestBody List<String> productInfoList);
 
     /**
@@ -33,6 +33,6 @@ public interface ProductClient {
      *
      * @param cartDTOList cartDTOList
      */
-    @PostMapping("/brother-takeaway-product/product/decrease-stock")
+    @PostMapping("/product/decrease-stock")
     void decreaseStock(@RequestBody List<CartVO> cartDTOList);
 }

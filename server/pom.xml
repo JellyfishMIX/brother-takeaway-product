@@ -12,9 +12,20 @@
     <artifactId>brother-takeaway-product-server</artifactId>
 
     <dependencies>
+        <!--common模块-->
         <dependency>
             <groupId>me.jmix</groupId>
             <artifactId>brother-takeaway-product-common</artifactId>
+        </dependency>
+        <!--spring-cloud-config-client-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-config-client</artifactId>
+        </dependency>
+        <!--使用RabbitMQ进行通信-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
     </dependencies>
 
