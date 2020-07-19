@@ -5,6 +5,7 @@ spring:
     config:
       discovery:
         enabled: true
+        # spring-cloud-config的service-id
         service-id: brother-takeaway-config
       profile: dev
 

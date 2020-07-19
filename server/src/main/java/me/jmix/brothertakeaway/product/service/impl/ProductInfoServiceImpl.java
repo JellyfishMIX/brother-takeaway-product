@@ -1,15 +1,22 @@
 package me.jmix.brothertakeaway.product.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.rabbitmq.tools.json.JSONUtil;
 import me.jmix.brothertakeaway.product.dao.ProductInfoRepository;
 import me.jmix.brothertakeaway.product.dto.CartDTO;
 import me.jmix.brothertakeaway.product.entity.ProductInfo;
 import me.jmix.brothertakeaway.product.enums.ProductEnum;
 import me.jmix.brothertakeaway.product.exception.ProductException;
 import me.jmix.brothertakeaway.product.service.ProductInfoService;
+import me.jmix.brothertakeaway.product.utils.JsonUtil;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +28,8 @@ import java.util.Optional;
 public class ProductInfoServiceImpl implements ProductInfoService {
     @Autowired
     private ProductInfoRepository productInfoRepository;
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
     /**
      * 获取上架的商品信息列表
@@ -52,10 +61,11 @@ public class ProductInfoServiceImpl implements ProductInfoService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void decreaseStock(List<CartDTO> cartDTOList) {
+        List<ProductInfo> productInfoList = new ArrayList<>();
         for (CartDTO cartDTO : cartDTOList) {
             Optional<ProductInfo> productInfoOptional = productInfoRepository.findById(cartDTO.getProductId());
             // 判断商品是否存在
-            if (!productInfoOptional.isPresent()) {
+            if (productInfoOptional.isEmpty()) {
                 throw new ProductException(ProductEnum.PRODUCT_NOT_EXIST);
             }
 
@@ -68,6 +78,10 @@ public class ProductInfoServiceImpl implements ProductInfoService {
 
             productInfo.setProductStock(result);
             productInfoRepository.save(productInfo);
+            productInfoList.add(productInfo);
         }
+
+        // 确保数据库事务完成后，再发送MQ消息
+        amqpTemplate.convertAndSend("productInfo", JsonUtil.toJson(productInfoList));
     }
 }
