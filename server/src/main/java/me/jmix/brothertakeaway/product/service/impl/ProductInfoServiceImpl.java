@@ -1,9 +1,5 @@
 package me.jmix.brothertakeaway.product.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.rabbitmq.tools.json.JSONUtil;
 import me.jmix.brothertakeaway.product.dao.ProductInfoRepository;
 import me.jmix.brothertakeaway.product.dto.CartDTO;
 import me.jmix.brothertakeaway.product.entity.ProductInfo;

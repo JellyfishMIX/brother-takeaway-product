@@ -38,6 +38,8 @@ public class ProductController {
      * @return
      */
     @GetMapping("/list")
+    // @CrossOrigin注释，表示此接口开启允许跨域。allowCredentials属性表示允许cookie跨域。
+    @CrossOrigin(allowCredentials = "true")
     public ResultVO list() {
         // 1. 查询所有在架的商品
         List<ProductInfo> productInfoList = productInfoService.getShelvesProductInfo();
